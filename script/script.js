@@ -2,8 +2,8 @@ const question = [
     {
         question : "In an examination, a student is to choose any 8 questions from a set of 12. If the questions 1 and 3 are compulsory then he can select the questions in",
         answers:[
-            {text:"210 ways",correct:true},
-            {text:"495 ways",correct:false},
+            {text:"210 ways",correct:false},
+            {text:"495 ways",correct:true},
             {text:"615 ways",correct:false},
             {text:"200 ways",correct:false},
         ]
@@ -38,7 +38,7 @@ const question = [
 ];
 
 const questionElement = document.getElementById("question");
-const answerBtns = document.getElementById("answer-btn");
+const answerBtns = document.getElementById("answer-btns");
 const nextBtn = document.getElementById("next-btn");
 
 
@@ -53,7 +53,7 @@ function startQuiz(){
 }
 
 function showQuestion(){
-    
+    resetState();
     let currentQuestion = question[currentQuestionIndex];
     let questionNo = currentQuestionIndex + 1;
     questionElement.innerHTML = `${questionNo}. ${currentQuestion.question}`;
@@ -66,9 +66,8 @@ function showQuestion(){
         if(answer.correct){
             button.dataset.correct = answer.correct;
         }
-        button.addEventListener("click",selectAnswer);
+        button.addEventListener("click", selectAnswer);
     });
-    resetState();
 }
 
 function resetState(){
@@ -84,12 +83,13 @@ function selectAnswer(e) {
     const isCorrect = selectedBtn.dataset.correct === "true";
     if(isCorrect){
         selectedBtn.classList.add("correct");
+        score++;
     }else{
         selectedBtn.classList.add("incorrect");
     }
     Array.from(answerBtns.children).forEach(button =>{
-        if(button.dataset.correct === "true"){
-            button.classList.add("currect");
+        if(button.dataset.correct == "true"){
+            button.classList.add("correct");
         }
         button.disabled = true;
     });
@@ -97,7 +97,7 @@ function selectAnswer(e) {
 }
 function showScore(){
     resetState();
-    questionElement.innerHTML = `You scored ${score} out of ${question.lenght}`;
+    questionElement.innerHTML = `You scored ${score} out of ${question.length}`;
     nextBtn.innerHTML = "play Again";
     nextBtn.style.display = "block";
 }
